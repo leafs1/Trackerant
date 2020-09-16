@@ -7,11 +7,11 @@ const client = new Discord.Client();
 //https://tracker.gg/valorant/profile/riot/Dinxx%23Zy1/overview
 
 
-(async () => {
+async function fetchData(name, id) { 
   try {
     const browser = await puppeteer.launch({headless: true})
     const page = await browser.newPage()
-    await page.goto("https://tracker.gg/valorant/profile/riot/Dinxx%23Zy1/overview", { waitUntil: 'networkidle2' })
+    await page.goto(`https://tracker.gg/valorant/profile/riot/${name}%23${id}/overview`, { waitUntil: 'networkidle2' })
     
     //await page.screenshot({
     //  path: "page1.png"
@@ -23,9 +23,9 @@ const client = new Discord.Client();
 
       let querySelectors = []
 
-      let matchMap = {parent: document.querySelectorAll('div.match__map'), children: {map: "span:nth-child(1)", time: "span.match__time"}}
-      let matchType = {parent: document.querySelectorAll('div.match__gametype'), children: {mode: "div.match__mode"}}
-      let matchScore = {parent: document.querySelectorAll('span.stat__value'), children: {won: "span.score--won", lost: "span.score--lost"}}
+      let matchMap = {parent: document.querySelectorAll('div.match__map'), children: {Map: "span:nth-child(1)", Time: "span.match__time"}}
+      let matchType = {parent: document.querySelectorAll('div.match__gametype'), children: {"Mode": "div.match__mode"}}
+      let matchScore = {parent: document.querySelectorAll('span.stat__value'), children: {"Winner's Score": "span.score--won", "Loser's Score": "span.score--lost"}}
       let personalMatchStats = {parent: document.querySelectorAll('div.stat'), children: {"K/D/A": "div.value", 
                                                                                           "K/D Ratio": "div.value",
                                                                                           "Damage": "div.value", 
@@ -67,6 +67,9 @@ const client = new Discord.Client();
                   break;
                 } else{
                   let content = historyElement.querySelector(value).textContent
+                  if (key == "Mode"){
+                    content = content.replace(/\s/g, '')
+                  }
                   matches[counter][key] = content;
                 }
               }
@@ -81,6 +84,10 @@ const client = new Discord.Client();
             try{
               for (const [key, value] of Object.entries(children)){
                 let content = historyElement.querySelector(value).textContent
+                
+                if (key == "Mode"){
+                  content = content.replace(/\s/g, '')
+                }
                 historyJson[key] = content
               }  
             }
@@ -97,7 +104,6 @@ const client = new Discord.Client();
         counter = 0
 
         console.log(personalStatsList)
-        
         
     
         let test = [0,1,2,3]
@@ -128,11 +134,12 @@ const client = new Discord.Client();
     console.log("\n ------------------------------------------------------")
     console.log(matches)
     console.log("done")
+    return matches
     //await browser.close()
   } catch (error) {
     console.log(error)
   }
-})()
+}
 
 
 
@@ -144,9 +151,41 @@ client.on('message', msg => {
   if (msg.author.id != "753119817296248904") {
     if (msg.content.substring(0,1) === "?") {
       var messageContent = msg.content.substring(1, msg.content.length)
-
-      switch(messageContent) {
+      var messageContentList = messageContent.split(" ")
+      var keyword = messageContentList[0]
+      switch(keyword) {
         case "history":
+          var name = messageContentList[1]
+          var hash = messageContentList[2]
+          fetchData(name, hash).then(value => {
+
+            if (value.length == 0 || value.length == null) {
+              msg.reply("This account does not have any recent matches!!!")
+            }
+
+            //var stringify = JSON.stringify(value)
+            var gameCounter = 1
+            for (var game in value) {
+              var info = ""
+              for (const [key, val] of Object.entries(value[game])) {
+                //console.log(JSON.stringify(game))
+                info += ` - ${key}: ${val}\n`
+              }
+              info += "----------------------------------------"
+
+              msg.reply(`-------------------- Game ${gameCounter} --------------------\n${info}`)
+              gameCounter ++
+            }
+            //var map = value[0].map
+            
+            
+          }).catch(error => {
+            console.log(error)
+            // if you have an error
+          })
+          
+
+
           /*
           async () => {
             const browser = await puppeteer.launch({
