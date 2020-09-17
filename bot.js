@@ -9,7 +9,7 @@ const client = new Discord.Client();
 
 async function fetchData(name, id) { 
   try {
-    const browser = await puppeteer.launch({headless: false})
+    const browser = await puppeteer.launch({headless: true})
     const page = await browser.newPage()
     await page.goto(`https://tracker.gg/valorant/profile/riot/${name}%23${id}/overview`, { waitUntil: 'networkidle2' })
     
@@ -33,8 +33,7 @@ async function fetchData(name, id) {
                                                                                           "Avg Score": "div.value"}}
       let titles = {parent: document.querySelectorAll('div.gamereport-list__group'), children: {"Date": "h3.gamereport-list__title", 
                                                                                                 "Entries": "div.gamereport-list__entries"}}
-                                                                                                
-      
+
 
 
 
@@ -122,6 +121,8 @@ async function fetchData(name, id) {
         })
         
         // Date logic
+        counter5 = 0
+        dateCounter = 0
         entries.forEach((entry) => {
 
           let len = (entry.match(/Damage/g) || []).length
