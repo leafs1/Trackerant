@@ -9,7 +9,7 @@ const client = new Discord.Client();
 
 async function fetchData(name, id) { 
   try {
-    const browser = await puppeteer.launch({headless: true})
+    const browser = await puppeteer.launch({headless: false})
     const page = await browser.newPage()
     await page.goto(`https://tracker.gg/valorant/profile/riot/${name}%23${id}/overview`, { waitUntil: 'networkidle2' })
     
@@ -23,20 +23,27 @@ async function fetchData(name, id) {
 
       let querySelectors = []
 
-      let matchMap = {parent: document.querySelectorAll('div.match__map'), children: {Map: "span:nth-child(1)", Time: "span.match__time"}}
+      let matchScoreChildName = `${name}'s Score`
+      let matchMap = {parent: document.querySelectorAll('div.match__map'), children: {"Map": "span:nth-child(1)", "Time": "span.match__time"}}
       let matchType = {parent: document.querySelectorAll('div.match__gametype'), children: {"Mode": "div.match__mode"}}
-      let matchScore = {parent: document.querySelectorAll('span.stat__value'), children: {"Winner's Score": "span.score--won", "Loser's Score": "span.score--lost"}}
+      let matchScore = {parent: document.querySelectorAll('span.stat__value'), children: {[matchScoreChildName]: "span.score--won", "Oppsing Team's Score": "span.score--lost"}}
       let personalMatchStats = {parent: document.querySelectorAll('div.stat'), children: {"K/D/A": "div.value", 
                                                                                           "K/D Ratio": "div.value",
                                                                                           "Damage": "div.value", 
                                                                                           "Avg Score": "div.value"}}
+      let titles = {parent: document.querySelectorAll('div.gamereport-list__group'), children: {"Date": "h3.gamereport-list__title", 
+                                                                                                "Entries": "div.gamereport-list__entries"}}
+                                                                                                
+      
 
 
 
       querySelectors.push(matchMap)
       querySelectors.push(matchType)
       querySelectors.push(matchScore)
+      querySelectors.push(titles)
       querySelectors.push(personalMatchStats)
+      
 
       console.log(querySelectors)
 
@@ -46,30 +53,44 @@ async function fetchData(name, id) {
 
       let b = []
 
+      let date = []
+      let entries = []
 
       for (var i in querySelectors){
         let parent = querySelectors[i].parent
         let children = querySelectors[i].children
-        console.log("matches")
-        console.log(matches)
+        
 
         let personalStatsList = []
+        
+        
 
         parent.forEach((historyElement) => {
-          console.log("elm")
-          console.log(historyElement)
+          //console.log("elm")
+          //console.log(historyElement)
           if (i > 0){
             try{
-              for (const [key, value] of Object.entries(children)){
+              for (const [key, value] of Object.entries(children)){              
+
                 if (key == "K/D/A" || key == "K/D Ratio" || key == "Damage" || key == "Avg Score"){
                   let content = historyElement.querySelector(value).textContent
                   personalStatsList.push(content)
                   break;
+                } else if (key == "Date"){
+                  console.log("in date")
+                  let content = historyElement.querySelector(value).textContent
+                  date.push(content)
+                } else if (key == "Entries"){
+                  console.log("in entries")
+                  let content = historyElement.querySelector(value).textContent
+                  entries.push(content)
                 } else{
                   let content = historyElement.querySelector(value).textContent
+
                   if (key == "Mode"){
                     content = content.replace(/\s/g, '')
                   }
+
                   matches[counter][key] = content;
                 }
               }
@@ -97,28 +118,42 @@ async function fetchData(name, id) {
             }
             matches.push(historyJson)
           }
-          
 
         })
+        // Special condition for date
+        let dd = entries[1]
+        let a = "Damage n"
+        console.log(`Date = ${date}`)
+        console.log(`Entries = ${dd}`)
+        entries.forEach((entry) => {
+          console.log((entry.match(/Damage/g) || []).length)
+        })
+        
+        //var count = (a.match(/Damage/g) || []).length;
+        //console.log(`count = ${count}`)
 
+
+
+
+        // Reset counter...
         counter = 0
 
-        console.log(personalStatsList)
+        //console.log(personalStatsList)
         
-    
+        // Special condition for match stats
         let test = [0,1,2,3]
         let test2 = ["K/D/A", "K/D Ratio", "Damage", "Avg Score"]
         counter2 = -1
         for (var j in matches) {
-          console.log(j)
+          //console.log(j)
           counter2 ++
           counter3 = -1
           for (var k in test) {
             counter3 ++
-            console.log(k)
-            console.log("2")
+            //console.log(k)
+            //console.log("2")
             matches[counter2][test2[counter3]] = personalStatsList[0]
-            console.log(matches)
+            //console.log(matches)
             personalStatsList.splice(0, 1)
           }
         }
@@ -160,7 +195,7 @@ client.on('message', msg => {
           fetchData(name, hash).then(value => {
 
             if (value.length == 0 || value.length == null) {
-              msg.reply("This account does not have any recent matches!!!")
+              msg.reply("This account does not have any recent matches or your Riot account is private!!!")
             }
 
             //var stringify = JSON.stringify(value)
