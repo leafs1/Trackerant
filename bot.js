@@ -43,7 +43,7 @@ async function fetchData(name, id) {
       querySelectors.push(matchScore)
       querySelectors.push(titles)
       querySelectors.push(personalMatchStats)
-      
+
 
       console.log(querySelectors)
 
@@ -120,17 +120,23 @@ async function fetchData(name, id) {
           }
 
         })
-        // Special condition for date
-        let dd = entries[1]
-        let a = "Damage n"
-        console.log(`Date = ${date}`)
-        console.log(`Entries = ${dd}`)
-        entries.forEach((entry) => {
-          console.log((entry.match(/Damage/g) || []).length)
-        })
         
-        //var count = (a.match(/Damage/g) || []).length;
-        //console.log(`count = ${count}`)
+        // Date logic
+        entries.forEach((entry) => {
+
+          let len = (entry.match(/Damage/g) || []).length
+          console.log(`len = ${len}`)
+          
+          for (let n=0; n < len; n++) {
+            console.log(`date = ${date}`)
+            console.log(`date[counter5] = ${date[counter5]}`)
+            console.log(`counter5 = ${counter5}`)
+            matches[dateCounter]["Date"] = date[counter5]
+            dateCounter ++ 
+          }
+          counter5 ++
+          
+        })
 
 
 
