@@ -198,11 +198,22 @@ client.on('message', msg => {
       var messageContent = msg.content.substring(1, msg.content.length)
       var messageContentList = messageContent.split(" ")
       var keyword = messageContentList[0]
+
       switch(keyword) {
         case "history":
+          msg.reply("Getting Info...")
           var name = messageContentList[1]
           var hash = messageContentList[2]
-          fetchData(name, hash).then(value => {
+          var numGames = messageContentList[3]
+          fetchData(name, hash, numGames).then(beforeValue => {
+
+          //  value = value.splice(Number(numGames)-1, value.length - Number(numGames))
+            if (numGames == "all") {
+              value = beforeValue
+            } else {
+              value = beforeValue.splice(0, Number(numGames))
+            }
+
 
             if (value.length == 0 || value.length == null) {
               const publicizeEmbed = new Discord.MessageEmbed()
@@ -278,18 +289,11 @@ client.on('message', msg => {
           
 
 
-          /*
-          async () => {
-            const browser = await puppeteer.launch({
-            headless: false,
-          });
-          const page = await browser.newPage();
-          await page.setRequestInterception(true);
-          await page.goto('http://www.google.com/');
-          }
-          console.log("page")
-          console.log(page)
-          */
+        case "help":
+          const helpEmbed = new Discord.MessageEmbed()
+            .setTitle("Help")
+            .setDescription("Hey, I'm Trackerant!!! I can get u any information you want on various Valorant accounts.\n```1. To get your match history, type in \"?history <name> <tag> <number of games>\". For exaxmple, \"?history Dinxx Zy1 3\" or \"?history Dinxx Zy1 all\".```")
+          msg.reply(helpEmbed)
       }
 
     } else {
