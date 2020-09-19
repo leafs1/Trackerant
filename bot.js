@@ -198,9 +198,11 @@ client.on('message', msg => {
       var messageContent = msg.content.substring(1, msg.content.length)
       var messageContentList = messageContent.split(" ")
       var keyword = messageContentList[0]
+      console.log(`Keyword = ${keyword}`)
 
       switch(keyword) {
         case "history":
+          console.log("History Case")
           msg.reply("Getting Info...")
           var name = messageContentList[1]
           var hash = messageContentList[2]
@@ -290,10 +292,14 @@ client.on('message', msg => {
 
 
         case "help":
-          const helpEmbed = new Discord.MessageEmbed()
-            .setTitle("Help")
-            .setDescription("Hey, I'm Trackerant!!! I can get u any information you want on various Valorant accounts.\n```1. To get your match history, type in \"?history <name> <tag> <number of games>\". For exaxmple, \"?history Dinxx Zy1 3\" or \"?history Dinxx Zy1 all\".```")
-          msg.reply(helpEmbed)
+          if (keyword == "help") {
+            console.log("Help case")
+            const helpEmbed = new Discord.MessageEmbed()
+              .setTitle("Help")
+              .setDescription("Hey, I'm Trackerant!!! I can get u any information you want on various Valorant accounts.\n```1. To get your match history, type in \"?history <name> <tag> <number of games>\". For exaxmple, \"?history Dinxx Zy1 3\" or \"?history Dinxx Zy1 all\".```")
+            msg.reply(helpEmbed)
+          }
+          
       }
 
     } else {
@@ -303,17 +309,3 @@ client.on('message', msg => {
 });
 
 client.login(auth.token);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
