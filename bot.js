@@ -23,7 +23,7 @@ async function fetchData(name, id) {
 
       let querySelectors = []
 
-      let matchScoreChildName = `${name}'s Score`
+      let matchScoreChildName = `Your Team's Score`
       let matchMap = {parent: document.querySelectorAll('div.match__map'), children: {"Map": "span:nth-child(1)", "Time": "span.match__time"}}
       let matchType = {parent: document.querySelectorAll('div.match__gametype'), children: {"Mode": "div.match__mode"}}
       let matchScore = {parent: document.querySelectorAll('span.stat__value'), children: {[matchScoreChildName]: "span.score--won", "Oppsing Team's Score": "span.score--lost"}}
@@ -33,7 +33,8 @@ async function fetchData(name, id) {
                                                                                           "Avg Score": "div.value"}}
       let titles = {parent: document.querySelectorAll('div.gamereport-list__group'), children: {"Date": "h3.gamereport-list__title", 
                                                                                                 "Entries": "div.gamereport-list__entries"}}
-
+      let agent = {parent: document.querySelectorAll('div.match__details'), children: {"Agent": "img.match__agent"}}                                                                                            
+//img.match__agent
 
 
 
@@ -41,16 +42,14 @@ async function fetchData(name, id) {
       querySelectors.push(matchType)
       querySelectors.push(matchScore)
       querySelectors.push(titles)
+      querySelectors.push(agent)
       querySelectors.push(personalMatchStats)
-
 
       console.log(querySelectors)
 
 
       // used to index through all created matches objects in the final list
       let counter = 0;
-
-      let b = []
 
       let date = []
       let entries = []
@@ -88,7 +87,11 @@ async function fetchData(name, id) {
 
                   if (key == "Mode"){
                     content = content.replace(/\s/g, '')
+                  } else if (key == "Agent") {
+                    content = historyElement.querySelector(value).getAttribute('src')
                   }
+
+
 
                   matches[counter][key] = content;
                 }
@@ -205,19 +208,64 @@ client.on('message', msg => {
               msg.reply("This account does not have any recent matches or your Riot account is private!!!")
             }
 
+
+
+            
+            
+                        
             //var stringify = JSON.stringify(value)
             var gameCounter = 1
             for (var game in value) {
-              var info = ""
-              for (const [key, val] of Object.entries(value[game])) {
-                //console.log(JSON.stringify(game))
-                info += ` - ${key}: ${val}\n`
+              //for (const [key, val] of Object.entries(value[game])) {
+              let currentMapImg = ""
+              if (value[game]["Map"] == "Haven") {
+                currentMapImg = "https://vignette.wikia.nocookie.net/valorant/images/7/70/Loading_Screen_Haven.png/revision/latest?cb=20200620202335"
+              } else if (value[game]["Map"] == "Bind") {
+                currentMapImg = "https://vignette.wikia.nocookie.net/valorant/images/2/23/Loading_Screen_Bind.png/revision/latest?cb=20200620202316"
+              } else if (value[game]["Map"] == "Split") {
+                currentMapImg = "https://vignette.wikia.nocookie.net/valorant/images/d/d6/Loading_Screen_Split.png/revision/latest?cb=20200620202349"
+              } else if (value[game]["Map"] == "Ascent") {
+                currentMapImg = "https://vignette.wikia.nocookie.net/valorant/images/e/e7/Loading_Screen_Ascent.png/revision/latest?cb=20200607180020"
               }
-              info += "----------------------------------------"
 
-              msg.reply(`-------------------- Game ${gameCounter} --------------------\n${info}`)
+              let winLoss = ""
+              if (value[game]["Your Team's Score"] > value[game]["Oppsing Team's Score"]) {
+                winLoss = "#008000"
+              } else if (value[game]["Your Team's Score"] < value[game]["Oppsing Team's Score"]) {
+                winLoss = "#FF0000"
+              } else {
+                winLoss = "#FFFF00"
+              }
+
+              const exampleEmbed = new Discord.MessageEmbed()
+                //.setColor('#0099ff')
+                .setColor(winLoss)
+                .setTitle(`${value[game]["Date"]} - ${value[game]["Time"]}`)
+                .setURL('https://discord.js.org/')
+                .setAuthor('Trackerant', 'https://i.imgur.com/wSTFkRM.png', 'https://discord.js.org')
+                .addFields(
+                  { name: `Mode`, value: `${value[game]["Mode"]}`, inline: true},
+                  { name: `Game Score`, value: `${value[game]["Your Team's Score"]} : ${value[game]["Oppsing Team's Score"]}`, inline: true },
+                )
+                .setThumbnail(value[game]["Agent"])
+                .addFields(
+                  { name: '\u200B', value: '\u200B' },
+                  { name: 'K/D/A', value: `${value[game]["K/D/A"]}`, inline: true },
+                  { name: 'K/D Ratio', value: `${value[game]["K/D Ratio"]}`, inline: true },
+                  { name: 'Damage', value: `${value[game]["Damage"]}`, inline: true },
+                  { name: 'Avg Score', value: `${value[game]["Avg Score"]}`, inline: true },
+                )
+                .setImage(currentMapImg)
+                .setTimestamp()
+                .setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png');
+                //console.log(JSON.stringify(game))
+              //  info += ` - ${key}: ${val}\n`
+              //}
+
+              msg.reply(exampleEmbed)
               gameCounter ++
             }
+            
             //var map = value[0].map
             
             
