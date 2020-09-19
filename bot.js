@@ -205,13 +205,12 @@ client.on('message', msg => {
           fetchData(name, hash).then(value => {
 
             if (value.length == 0 || value.length == null) {
-              msg.reply("This account does not have any recent matches or your Riot account is private!!!")
+              const publicizeEmbed = new Discord.MessageEmbed()
+                .setTitle("Error")
+                .setDescription(`This account does not have any recent matches or your Riot account is private!!! To publicize your account, click [here](https://tracker.gg/valorant/profile/riot/${name}%23${hash}/overview)`)
+              msg.reply(publicizeEmbed)
             }
 
-
-
-            
-            
                         
             //var stringify = JSON.stringify(value)
             var gameCounter = 1
@@ -239,25 +238,28 @@ client.on('message', msg => {
 
               const exampleEmbed = new Discord.MessageEmbed()
                 //.setColor('#0099ff')
+                .attachFiles(['./assets/TRACKERANT.png'])
                 .setColor(winLoss)
-                .setTitle(`${value[game]["Date"]} - ${value[game]["Time"]}`)
-                .setURL('https://discord.js.org/')
-                .setAuthor('Trackerant', 'https://i.imgur.com/wSTFkRM.png', 'https://discord.js.org')
+                .setTitle(`*__${value[game]["Date"]} - ${value[game]["Time"]}__*`)
+                .setDescription(`${value[game]["Mode"]} - ${value[game]["Your Team's Score"]} : ${value[game]["Oppsing Team's Score"]}`)
+                //.setURL('https://discord.js.org/')
+                .setAuthor('Trackerant', 'attachment://TRACKERANT.png', 'https://github.com/leafs1/Trackerant')
                 .addFields(
-                  { name: `Mode`, value: `${value[game]["Mode"]}`, inline: true},
-                  { name: `Game Score`, value: `${value[game]["Your Team's Score"]} : ${value[game]["Oppsing Team's Score"]}`, inline: true },
+                  //{ name: `Mode`, value: `${value[game]["Mode"]}`, inline: true},
+                  //{ name: `Game Score`, value: `${value[game]["Your Team's Score"]} : ${value[game]["Oppsing Team's Score"]}`, inline: true },
                 )
                 .setThumbnail(value[game]["Agent"])
                 .addFields(
-                  { name: '\u200B', value: '\u200B' },
+                  
+                  [{ name: '\u200B', value: '\u200B' },
                   { name: 'K/D/A', value: `${value[game]["K/D/A"]}`, inline: true },
                   { name: 'K/D Ratio', value: `${value[game]["K/D Ratio"]}`, inline: true },
                   { name: 'Damage', value: `${value[game]["Damage"]}`, inline: true },
-                  { name: 'Avg Score', value: `${value[game]["Avg Score"]}`, inline: true },
+                  { name: 'Avg Score', value: `${value[game]["Avg Score"]}`, inline: true }]
                 )
                 .setImage(currentMapImg)
                 .setTimestamp()
-                .setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png');
+                //.setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png');
                 //console.log(JSON.stringify(game))
               //  info += ` - ${key}: ${val}\n`
               //}
