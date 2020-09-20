@@ -10,7 +10,12 @@ client.login(process.env.BOT_TOKEN)
 
 async function fetchData(name, id) { 
   try {
-    const browser = await puppeteer.launch({headless: true})
+    const browser = await puppeteer.launch({
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+      ],
+    })
     const page = await browser.newPage()
     await page.goto(`https://tracker.gg/valorant/profile/riot/${name}%23${id}/overview`, { waitUntil: 'networkidle2' })
     
