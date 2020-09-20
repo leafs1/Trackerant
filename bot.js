@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-//const auth = require("./auth.json")
+const auth = require("./config.json")
 const puppeteer = require('puppeteer');
 
 
@@ -307,5 +307,5 @@ client.on('message', msg => {
     }
   }
 });
-
-client.login(process.env.BOT_TOKEN);
+client.login(auth.token)
+//client.login(process.env.BOT_TOKEN);
