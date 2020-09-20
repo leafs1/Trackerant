@@ -1,10 +1,11 @@
 const Discord = require('discord.js');
-const auth = require("./config.json")
+//const auth = require("./config.json")
 const puppeteer = require('puppeteer');
 
 
 const client = new Discord.Client();
 //https://tracker.gg/valorant/profile/riot/Dinxx%23Zy1/overview
+client.login(process.env.BOT_TOKEN)
 
 
 async function fetchData(name, id) { 
@@ -193,7 +194,7 @@ client.on('ready', () => {
 });
 
 client.on('message', msg => {
-  if (msg.author.id != "753119817296248904") {
+  if (msg.author.id != "757116118639837235") {
     if (msg.content.substring(0,1) === "?") {
       var messageContent = msg.content.substring(1, msg.content.length)
       var messageContentList = messageContent.split(" ")
@@ -307,5 +308,4 @@ client.on('message', msg => {
     }
   }
 });
-client.login(auth.token)
 //client.login(process.env.BOT_TOKEN);
