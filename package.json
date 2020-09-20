@@ -1,17 +1,33 @@
 {
-    "name": "valorant-bot",
-    "version": "1.0.0",
-    "description": "Bot that provides Valorant-related information (match history, agent info, map info, ...)",
-    "main": "bot.js",
-    "author": "Michael Adragna",
-    "dependencies": {
-        "chalk": "^4.1.0",
-        "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
-        "discord.js": "^12.3.1",
-        "es6-promise": "^4.2.8",
-        "isomorphic-fetch": "^2.2.1",
-        "jsdom": "^16.4.0",
-        "puppeteer": "^5.2.1",
-        "winston": "^3.3.3"
-    }
+  "name": "trackerant",
+  "version": "1.0.0",
+  "description": "Bot that provides Valorant-related information (match history, agent info, map info, ...)",
+  "main": "bot.js",
+  "author": "Michael Adragna",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
+    "discord.js": "^12.3.1",
+    "discord.js-commando": "^0.10.0",
+    "es6-promise": "^4.2.8",
+    "isomorphic-fetch": "^2.2.1",
+    "jsdom": "^16.4.0",
+    "puppeteer": "^5.2.1",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leafs1/Trackerant.git"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leafs1/Trackerant/issues"
+  },
+  "homepage": "https://github.com/leafs1/Trackerant#readme"
 }
