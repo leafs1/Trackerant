@@ -4,6 +4,7 @@
   "description": "Bot that provides Valorant-related information (match history, agent info, map info, ...)",
   "main": "bot.js",
   "author": "Michael Adragna",
+  "type": "module",
   "dependencies": {
     "chalk": "^4.1.0",
     "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
@@ -20,6 +21,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node bot.js"
   },
+  
   "repository": {
     "type": "git",
     "url": "git+https://github.com/leafs1/Trackerant.git"
