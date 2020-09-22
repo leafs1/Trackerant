@@ -126,7 +126,7 @@ client.on('message', msg => {
             console.log("Help case")
             const helpEmbed = new Discord.MessageEmbed()
               .setTitle("Help")
-              .setDescription("Hey, I'm Trackerant!!! I can get u any information you want on various Valorant accounts.\n```1. To get your match history, type in \"?history <name> <tag> <number of games>\". For exaxmple, \"?history Dinxx Zy1 3\" or \"?history Dinxx Zy1 all\".```")
+              .setDescription("Hey, I'm Trackerant!!! I can get you any information you want on various Valorant accounts.\n```1. To get your match history, type in \"?history <name> <tag> <number of games>\". For example, \"?history Dinxx Zy1 3\" or \"?history Dinxx Zy1 all\".```")
             msg.reply(helpEmbed)
           }
 
