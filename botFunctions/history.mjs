@@ -24,7 +24,7 @@ export default async function fetchHistory(name, id) {
         let matchScoreChildName = `Your Team's Score`
         let matchMap = {parent: document.querySelectorAll('div.match__map'), children: {"Map": "span:nth-child(1)", "Time": "span.match__time"}}
         let matchType = {parent: document.querySelectorAll('div.match__gametype'), children: {"Mode": "div.match__mode"}}
-        let matchScore = {parent: document.querySelectorAll('span.stat__value'), children: {[matchScoreChildName]: "span.score--won", "Oppsing Team's Score": "span.score--lost"}}
+        let matchScore = {parent: document.querySelectorAll('span.stat__value'), children: {[matchScoreChildName]: "span.score--won", "Opposing Team's Score": "span.score--lost"}}
         let personalMatchStats = {parent: document.querySelectorAll('div.stat'), children: {"K/D/A": "div.value", 
                                                                                             "K/D Ratio": "div.value",
                                                                                             "Damage": "div.value", 
