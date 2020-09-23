@@ -11,8 +11,7 @@ import fetchPersonalStats from './botFunctions/personalStats.mjs'
 const client = new Discord.Client();
 //https://tracker.gg/valorant/profile/riot/Dinxx%23Zy1/overview
 
-client.login("NzU3MTE2MTE4NjM5ODM3MjM1.X2btVQ.BCsEHMSXeElxheZtaGVpIn-v6hY")
-//client.login(process.env.BOT_TOKEN)
+client.login(process.env.BOT_TOKEN)
 
 
 
