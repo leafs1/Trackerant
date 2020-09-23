@@ -3,7 +3,7 @@ import puppeteer from 'puppeteer';
 export default async function fetchHistory(name, id) { 
     try {
       const browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
         args: [
           '--no-sandbox',
           '--disable-setuid-sandbox',

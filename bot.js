@@ -11,7 +11,8 @@ import fetchPersonalStats from './botFunctions/personalStats.mjs'
 const client = new Discord.Client();
 //https://tracker.gg/valorant/profile/riot/Dinxx%23Zy1/overview
 
-client.login(process.env.BOT_TOKEN)
+client.login("NzU3MTE2MTE4NjM5ODM3MjM1.X2btVQ.BCsEHMSXeElxheZtaGVpIn-v6hY")
+//client.login(process.env.BOT_TOKEN)
 
 
 
@@ -71,9 +72,9 @@ client.on('message', msg => {
               }
 
               let winLoss = ""
-              if (value[game]["Your Team's Score"] > value[game]["Oppsing Team's Score"]) {
+              if (value[game]["Your Team's Score"] > value[game]["Opposing Team's Score"]) {
                 winLoss = "#008000"
-              } else if (value[game]["Your Team's Score"] < value[game]["Oppsing Team's Score"]) {
+              } else if (value[game]["Your Team's Score"] < value[game]["Opposing Team's Score"]) {
                 winLoss = "#FF0000"
               } else {
                 winLoss = "#FFFF00"
@@ -84,7 +85,7 @@ client.on('message', msg => {
                 .attachFiles(['./assets/TRACKERANT.png'])
                 .setColor(winLoss)
                 .setTitle(`*__${value[game]["Date"]} - ${value[game]["Time"]}__*`)
-                .setDescription(`${value[game]["Mode"]} - ${value[game]["Your Team's Score"]} : ${value[game]["Oppsing Team's Score"]}`)
+                .setDescription(`${value[game]["Mode"]} - ${value[game]["Your Team's Score"]} : ${value[game]["Opposing Team's Score"]}`)
                 //.setURL('https://discord.js.org/')
                 .setAuthor('Trackerant', 'attachment://TRACKERANT.png', 'https://github.com/leafs1/Trackerant')
                 .addFields(
@@ -121,8 +122,8 @@ client.on('message', msg => {
           
 
 
-        case "help":
-          if (keyword == "help") {
+        case "hep":
+          if (keyword == "hep") {
             console.log("Help case")
             const helpEmbed = new Discord.MessageEmbed()
               .setTitle("Help")
