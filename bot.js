@@ -38,7 +38,7 @@ client.on('message', msg => {
           var hash = messageContentList[2]
           var numGames = messageContentList[3]
           fetchHistory(name, hash, numGames).then(beforeValue => {
-
+            let value = 0
           //  value = value.splice(Number(numGames)-1, value.length - Number(numGames))
             if (numGames == "all") {
               value = beforeValue
