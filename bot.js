@@ -17,7 +17,6 @@ client.login(process.env.BOT_TOKEN)
 
 
 
-
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 });
@@ -121,8 +120,8 @@ client.on('message', msg => {
           
 
 
-        case "hep":
-          if (keyword == "hep") {
+        case "help":
+          if (keyword == "help") {
             console.log("Help case")
             const helpEmbed = new Discord.MessageEmbed()
               .setTitle("Help")
