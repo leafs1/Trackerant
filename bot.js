@@ -71,9 +71,9 @@ client.on('message', msg => {
 
               let winLoss = ""
               if (value[game]["Your Team's Score"] > value[game]["Opposing Team's Score"]) {
-                winLoss = "#008000"
-              } else if (value[game]["Your Team's Score"] < value[game]["Opposing Team's Score"]) {
                 winLoss = "#FF0000"
+              } else if (value[game]["Your Team's Score"] < value[game]["Opposing Team's Score"]) {
+                winLoss = "#008000"
               } else {
                 winLoss = "#FFFF00"
               }
